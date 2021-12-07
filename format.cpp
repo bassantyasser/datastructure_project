@@ -4,14 +4,16 @@ using namespace std;
 
 typedef long long ll;
 
-void indent (int n);
+void indent (int n, fstream& file);
+void Print_tag (int indentation, fstream& file, string& line, int& i);
 
 
 int main ()
 {
     fstream my_file, temp_file;
-    my_file.open ("file.xml", ios::in);
+    my_file.open ("test.xml", ios::in);
     temp_file.open ("temp.xml", ios::out);
+
     if (my_file.is_open () && temp_file.is_open ())
     {
         int indentation = 0;
@@ -23,11 +25,16 @@ int main ()
                 if (line[i] == '<') //tag
                 {
                     if (line[i + 1] == '/') //closing
-                        indentation --;
-                    else
                     {
-                        indentation ++;
+                        indentation --;
+                        //print the tag
+                        Print_tag (indentation, temp_file, line, i);
 
+                    } else  //opening
+                    {
+                        //print the tag
+                        Print_tag (indentation, temp_file, line, i);
+                        indentation ++;
                     }
                 }
             }
@@ -40,8 +47,17 @@ int main ()
 
 }
 
-bool arePair ();
-void indent (int n)
+void Print_tag (int indentation, fstream& file, string& line, int& i)
 {
-    cout << string (n * 4, ' ');
+    indent (indentation, file);
+    while (line[i] != '>')
+    {
+        file << line[i++];
+    }
+    file << line[i++] << endl;
+}
+
+void indent (int n, fstream& file)
+{
+    file << string (n * 4, ' ');
 }
