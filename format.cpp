@@ -6,6 +6,8 @@ typedef long long ll;
 
 void indent (int n, fstream& file);
 void Print_tag (int indentation, fstream& file, string& line, int& i);
+void Print_data (int indentation, fstream& file, string& line, int& i);
+void remove_space (string& line, int& i);
 
 
 int main ()
@@ -38,7 +40,8 @@ int main ()
                     }
                 } else //data
                 {
-
+                    //print data
+                    Print_data (indentation, temp_file, line, i);
                 }
             }
         }
@@ -50,10 +53,28 @@ int main ()
 
 }
 
+void Print_data (int indentation, fstream& file, string& line, int& i)
+{
+    remove_space (line, i);
+    if (i >= line.size ())
+        return;
+
+    indent (indentation, file);
+    while (line[i] != '<' && i < line.size ())
+    {
+        file << line[i++];
+    }
+    file << endl;
+    i --;
+}
+
 void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
 {
+    remove_space (line, i);
+    if (i >= line.size ())
+        return;
     indent (indentation, file);
-    while (line[i] != '>')
+    while (line[i] != '>' && i < line.size ())
     {
         file << line[i++];
     }
@@ -63,4 +84,13 @@ void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
 void indent (int n, fstream& file)  //tested
 {
     file << string (n * 4, ' ');
+}
+
+void remove_space (string& line, int& i)
+{
+    for (; i < line.size (); i ++)
+    {
+        if (line[i] != ' ')
+            return;
+    }
 }
