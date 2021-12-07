@@ -4,23 +4,44 @@ using namespace std;
 
 typedef long long ll;
 
-void init ();
+void indent (int n);
+
 
 int main ()
 {
-    init ();
-    fstream my_file;
-    my_file.open ("file.xml", ios::app);
-    if (my_file.is_open ())
+    fstream my_file, temp_file;
+    my_file.open ("file.xml", ios::in);
+    temp_file.open ("temp.xml", ios::out);
+    if (my_file.is_open () && temp_file.is_open ())
     {
+        int indentation = 0;
+        string line; //take the file line by line
+        while (getline (my_file, line))
+        {
+            for (int i = 0; i < line.size (); i ++)
+            {
+                if (line[i] == '<') //tag
+                {
+                    if (line[i + 1] == '/') //closing
+                        indentation --;
+                    else
+                    {
+                        indentation ++;
 
+                    }
+                }
+            }
+        }
         my_file.close ();
+        temp_file.close ();
     }
+
+    //read from temp file and overwrite the original file
 
 }
 
-void init ()
+bool arePair ();
+void indent (int n)
 {
-    (std::cin).tie (0);
-    (std::cin).sync_with_stdio (0);
+    cout << string (n * 4, ' ');
 }
