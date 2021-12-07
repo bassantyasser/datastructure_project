@@ -11,7 +11,7 @@ void Print_tag (int indentation, fstream& file, string& line, int& i);
 int main ()
 {
     fstream my_file, temp_file;
-    my_file.open ("test.xml", ios::in);
+    my_file.open ("file.xml", ios::in);
     temp_file.open ("temp.xml", ios::out);
 
     if (my_file.is_open () && temp_file.is_open ())
@@ -36,6 +36,9 @@ int main ()
                         Print_tag (indentation, temp_file, line, i);
                         indentation ++;
                     }
+                } else //data
+                {
+
                 }
             }
         }
@@ -47,17 +50,17 @@ int main ()
 
 }
 
-void Print_tag (int indentation, fstream& file, string& line, int& i)
+void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
 {
     indent (indentation, file);
     while (line[i] != '>')
     {
         file << line[i++];
     }
-    file << line[i++] << endl;
+    file << line[i] << endl;
 }
 
-void indent (int n, fstream& file)
+void indent (int n, fstream& file)  //tested
 {
     file << string (n * 4, ' ');
 }
