@@ -1,8 +1,11 @@
-#include<bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
 typedef long long ll;
+
 
 void indent (int n, fstream& file);
 void Print_tag (int indentation, fstream& file, string& line, int& i);
@@ -22,26 +25,30 @@ int main ()
         string line; //take the file line by line
         while (getline (my_file, line))
         {
+            // line = ltrim (line);
             for (int i = 0; i < line.size (); i ++)
             {
-                if (line[i] == '<') //tag
+                remove_space (line, i);
+                if (i < line.size ())
                 {
-                    if (line[i + 1] == '/') //closing
+                    if (line[i] == '<') //tag
                     {
-                        indentation --;
-                        //print the tag
-                        Print_tag (indentation, temp_file, line, i);
-
-                    } else  //opening
+                        if (line[i + 1] == '/') //closing
+                        {
+                            indentation --;
+                            //print the tag
+                            Print_tag (indentation, temp_file, line, i);
+                        } else  //opening
+                        {
+                            //print the tag
+                            Print_tag (indentation, temp_file, line, i);
+                            indentation ++;
+                        }
+                    } else //data
                     {
-                        //print the tag
-                        Print_tag (indentation, temp_file, line, i);
-                        indentation ++;
+                        //print data
+                        Print_data (indentation, temp_file, line, i);
                     }
-                } else //data
-                {
-                    //print data
-                    Print_data (indentation, temp_file, line, i);
                 }
             }
         }
@@ -49,15 +56,16 @@ int main ()
         temp_file.close ();
     }
 
-    //read from temp file and overwrite the original file
+    //read from temp file and overwrite the original file????
 
 }
 
+
 void Print_data (int indentation, fstream& file, string& line, int& i)
 {
-    remove_space (line, i);
-    if (i >= line.size ())
-        return;
+    // remove_space (line, i);
+    // if (i >= line.size ())
+    //     return;
 
     indent (indentation, file);
     while (line[i] != '<' && i < line.size ())
@@ -70,15 +78,17 @@ void Print_data (int indentation, fstream& file, string& line, int& i)
 
 void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
 {
-    remove_space (line, i);
-    if (i >= line.size ())
-        return;
+    // if (i == line.size ())
+    //     return;
+
     indent (indentation, file);
-    while (line[i] != '>' && i < line.size ())
+    while (line[i] != '>')
     {
-        file << line[i++];
+        if (line[i] != ' ')
+            file << line[i++];
     }
-    file << line[i] << endl;
+    file << line[i];
+    file << endl;
 }
 
 void indent (int n, fstream& file)  //tested
