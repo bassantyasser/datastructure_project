@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -11,12 +12,13 @@ void indent (int n, fstream& file);
 void Print_tag (int indentation, fstream& file, string& line, int& i);
 void Print_data (int indentation, fstream& file, string& line, int& i);
 void remove_space (string& line, int& i);
+// void erase_newLine (string& str);
 
 
 int main ()
 {
     fstream my_file, temp_file;
-    my_file.open ("file.xml", ios::in);
+    my_file.open ("test.xml", ios::in);
     temp_file.open ("temp.xml", ios::out);
 
     if (my_file.is_open () && temp_file.is_open ())
@@ -104,3 +106,19 @@ void remove_space (string& line, int& i)
             return;
     }
 }
+
+void Print_line (int indentation, fstream& file, string& line, int& i)
+{
+    indent (indentation, file);
+    while (i != line.size ())
+    {
+        file << line[i++];
+    }
+    file << line[i];
+    file << endl;
+}
+
+// void erase_newLine (string& str)
+// {
+//     str.erase (remove (str.begin (), str.end (), '\n'), str.end ());
+// }
