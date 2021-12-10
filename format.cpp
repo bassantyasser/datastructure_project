@@ -20,7 +20,7 @@ int main ()
 {
     fstream my_file, temp_file;
     static string data = "";
-    my_file.open ("C:\\Users\\hecker\\Desktop\\Data_Project\\project\\test.xml", ios::in);
+    my_file.open ("C:\\Users\\hecker\\Desktop\\Data_Project\\project\\file.xml", ios::in);
     temp_file.open ("C:\\Users\\hecker\\Desktop\\Data_Project\\project\\temp.xml", ios::out);
 
     if (my_file.is_open () && temp_file.is_open ())
@@ -86,10 +86,12 @@ void Parse_data (int indentation, fstream& file, string& line, int& i, string& d
 
 void data_to_file (int indentation, fstream& file, string& line, int& i, string& data)
 {
-    indent (indentation, file);
-    file << data;
     if (data != "")
+    {
+        indent (indentation, file);
+        file << data;
         file << endl;
+    }
     data = "";
 }
 void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
