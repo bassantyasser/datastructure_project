@@ -16,12 +16,23 @@ void Parse_data (int indentation, fstream& file, string& line, int& i, string& d
 void remove_space (string& line, int& i);
 void data_to_file (int indentation, fstream& file, string& line, int& i, string& data);
 void file_string (fstream& file, vector<string>& result);
+vector<string> formatting (fstream& my_file);
 // void erase_newLine (string& str);
 
 
 int main ()
 {
-    fstream my_file, temp_file;
+    fstream my_file;
+    vector<string> data;
+    data = formatting (my_file);
+
+    for (int i = 0; i < (int)data.size (); i ++)
+        cout << data[i] << endl;
+}
+
+vector<string> formatting (fstream& my_file)
+{
+    fstream temp_file;
     vector<string> result;
     static string data = "";
     my_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\file.xml", ios::in);
@@ -79,7 +90,7 @@ int main ()
     cout << result.size ();
 
     //read from temp file and overwrite the original file????
-
+    return result;
 }
 
 void file_string (fstream& file, vector<string>& result)
