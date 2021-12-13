@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <vector>
+#include <cstdio>
 
 using namespace std;
 
@@ -13,15 +15,17 @@ void Print_tag (int indentation, fstream& file, string& line, int& i);
 void Parse_data (int indentation, fstream& file, string& line, int& i, string& data);
 void remove_space (string& line, int& i);
 void data_to_file (int indentation, fstream& file, string& line, int& i, string& data);
+void file_string (fstream& file, vector<string>& result);
 // void erase_newLine (string& str);
 
 
 int main ()
 {
     fstream my_file, temp_file;
+    vector<string> result;
     static string data = "";
-    my_file.open ("C:\\Users\\hecker\\Desktop\\Data_Project\\project\\file.xml", ios::in);
-    temp_file.open ("C:\\Users\\hecker\\Desktop\\Data_Project\\project\\temp.xml", ios::out);
+    my_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\file.xml", ios::in);
+    temp_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\temp.xml");
 
     if (my_file.is_open () && temp_file.is_open ())
     {
@@ -56,15 +60,34 @@ int main ()
                     }
                 }
             }
+             //convert the file to array of strings
+            // for (int i = 0; i < (int)result.size (); i ++)
+            // {
+            //     cout << result[i];
+            // }
+            // cout << result.at (2);
+            my_file.close ();
+            temp_file.close ();
+            // int ans = remove ("temp.xml");
+            // cout << endl << ans << endl;
+
         }
-        my_file.close ();
-        temp_file.close ();
+
     }
+    temp_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\temp.xml");
+    file_string (temp_file, result);
+    cout << result.size ();
 
     //read from temp file and overwrite the original file????
 
 }
 
+void file_string (fstream& file, vector<string>& result)
+{
+    string line;
+    while (getline (file, line))
+        result.push_back (line);
+}
 
 void Parse_data (int indentation, fstream& file, string& line, int& i, string& data)
 {
