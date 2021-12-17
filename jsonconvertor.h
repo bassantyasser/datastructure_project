@@ -178,16 +178,16 @@ void printJson(Node* root, vector <string>& JsonString)
 
 }
 
-//string JsonOutput(string s)
-//{
-//	fstream file = getFile(s);
-//	vector <string> data = formatting(file);
-//	Node* root = new Node();
-//	root->settagname(data[0]);
-//	int i{ 1 };
-//	xmltree(root, data, i, root);
-//	vector <string> outputJson;
-//	printJson (root, outputJson);
-//	return VectToStr(outputJson);
-//
-//}
+string JsonOutput(string s)
+{
+	fstream file = getFile(s);
+	vector <string> data = formatting(file);
+	Node* root = new Node();
+	root->settagname(data[0]);
+	int i{ 1 };
+	xmltree(root, data, i, root);
+	vector <string> outputJson;
+	printJson (root, outputJson);
+	return VectToStr(outputJson);
+
+}
