@@ -1,6 +1,6 @@
 #include "c:\users\world\Downloads\Caty.h"
 
-vector <Node*> preorderTraversal(Node* root)
+vector <Node*> preorderTraversal(Node* root)                     //depth traversal but we called it pre-order
 {
 	stack <Node*> Stack;
 	stack <string> brackets;
