@@ -163,8 +163,6 @@ void printJson(Node* root, vector <string>& JsonString)
 				}
 			}
 
-			}
-
 		}
 
 
@@ -180,7 +178,6 @@ void printJson(Node* root, vector <string>& JsonString)
 	JsonString.push_back("\n");
 
 }
-
 string JsonOutput(string s)
 {
 	fstream file = getFile(s);
