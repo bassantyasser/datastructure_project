@@ -145,20 +145,23 @@ void printJson(Node* root, vector <string>& JsonString)
 			}
 			childrensize.pop();
 			childrensize.push(z);
-			if (childrensize.top() == 0) {
-				childrensize.pop();
-				int x = childrensize.top();
+			for (int j=0; j<childrensize.size();j++){
 				if (childrensize.top() == 0) {
-					JsonString.push_back(s.top());
-					s.pop();
-					JsonString.push_back(",");
-					JsonString.push_back("\n");
+					childrensize.pop();
+					int x = childrensize.top();
+					if (childrensize.top() == 0) {
+						JsonString.push_back(s.top());
+						s.pop();
+						JsonString.push_back(",");
+						JsonString.push_back("\n");
+					}
 
+					else
+					{
+						childrensize.push(x);
+					}
 				}
-				else
-				{
-					childrensize.push(x);
-				}
+			}
 
 			}
 
