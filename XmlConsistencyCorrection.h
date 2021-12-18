@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include "TreeXml.h"
-#include "weza.h"
+#include "formattingCons.h"
 stack <string> tags;
 using namespace std;
 string CheckConsistency(fstream& xmlFile);
