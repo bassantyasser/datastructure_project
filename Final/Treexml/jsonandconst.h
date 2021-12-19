@@ -1,5 +1,14 @@
 
 #include "Treexml.h"
+#include <string>
+#include <vector>
+#include <fstream>
+#include <stack>
+#include "formatting.h"
+#include <consistency.h>
+
+using namespace std;
+
 string replace(string t1) {        //to replace the open and closing tages with (")
     t1.replace(0, 1, "\"");
     t1.replace(t1.length() - 1, 1, "\"");
