@@ -1,6 +1,6 @@
 
 #include "Treexml.h"
-string replace(string t1) {        //to replace the opentags to ""
+string replace(string t1) {        //to replace the open and closing tages with (")
     t1.replace(0, 1, "\"");
     t1.replace(t1.length() - 1, 1, "\"");
     t1 = t1 + ":";
