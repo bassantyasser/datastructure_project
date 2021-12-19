@@ -224,42 +224,6 @@ string JsonOutput(string s)                             //takes the output from 
 
 stack <string> tags;
 
-static void xmltree(Node* node, vector <string> xml, int& i, Node* root) {
-
-
-    for (; i < xml.size(); i++)
-    {
-
-        //if the string hasn't open tag, store the data of the next node
-        if (xml[i].at(0) != '<') {
-            node->setdata(xml[i]);
-            i++;
-            return;
-        }
-        else if (xml[i].at(1) == '/')  //base case when we have a closedtag
-            return;
-
-        else {
-
-            Node* child = new Node(xml[i], " ");
-            if (root->getchildren().size() > 0 && xml[i] == root->getchildren()[0]->gettagname())
-            {
-                root->addsamechild(root, child);
-                i++;
-            }
-
-            else
-            {
-                node->addsamechild(node, child);
-                i++;
-
-            }
-            xmltree(child, xml, i, root);
-        }
-
-    }
-
-}
 
 void printXml(Node* node, vector<string>& XmlString)
 {
