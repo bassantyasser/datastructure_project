@@ -1,174 +1,109 @@
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <algorithm>
 #include <vector>
-#include <cstdio>
-
+#include <algorithm>
+#include <stack>
+#include <queue>
+#include "format.h"
 using namespace std;
 
-typedef long long ll;
-
-
-void indent (int n, fstream& file);
-void Print_tag (int indentation, fstream& file, string& line, int& i);
-void Parse_data (int indentation, fstream& file, string& line, int& i, string& data);
-void remove_space (string& line, int& i);
-void data_to_file (int indentation, fstream& file, string& line, int& i, string& data);
-void file_string (fstream& file, vector<string>& result);
-vector<string> formatting (fstream& my_file);
-// void erase_newLine (string& str);
-
-
-int main ()
+string format (string xml, vector<string>& to_json) // time O(n) // space O(n)
 {
-    fstream my_file;
-    vector<string> data;
-    data = formatting (my_file);
-
-    for (int i = 0; i < (int)data.size (); i ++)
-        cout << data[i] << endl;
-}
-
-vector<string> formatting (fstream& my_file)
-{
-    fstream temp_file;
-    vector<string> result;
-    static string data = "";
-    my_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\file.xml", ios::in);
-    temp_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\temp.xml");
-
-    if (my_file.is_open () && temp_file.is_open ())
+    queue<string> data;
+    static int indentation = 0;
+    string s = remove (&xml);
+    for (int i = 0; i < s.size (); i++)
     {
-        int indentation = 0;
-        string line; //take the file line by line
-        while (getline (my_file, line))
+        string temp = "";
+        if (s[i] == '<') //tag
         {
-            // line = ltrim (line);
-            for (int i = 0; i < line.size (); i ++)
+            if (s[i + 1] == '/') //closing tag
             {
-                remove_space (line, i);
-                if (i < line.size ())
-                {
-                    if (line[i] == '<') //tag
-                    {
-                        if (line[i + 1] == '/') //closing
-                        {
-                            data_to_file (indentation, temp_file, line, i, data);
-                            indentation --;
-                            //print the tag
-                            Print_tag (indentation, temp_file, line, i);
-                        } else  //opening
-                        {
-                            //print the tag
-                            Print_tag (indentation, temp_file, line, i);
-                            indentation ++;
-                        }
-                    } else //data
-                    {
-                        //print data
-                        Parse_data (indentation, temp_file, line, i, data);
-                    }
-                }
+                indentation --;
+                indent (temp, indentation);
+                for (; s[i] != '>'; i ++)
+                    temp += s[i];
+                temp += s[i];
+                data.push (temp);
+            } else //opening tag
+            {
+                indent (temp, indentation);
+                for (; s[i] != '>'; i ++)
+                    temp += s[i];
+                temp += s[i];
+                data.push (temp);
+                indentation++;
             }
-             //convert the file to array of strings
-            // for (int i = 0; i < (int)result.size (); i ++)
-            // {
-            //     cout << result[i];
-            // }
-            // cout << result.at (2);
-            my_file.close ();
-            temp_file.close ();
-            // int ans = remove ("temp.xml");
-            // cout << endl << ans << endl;
-
+        } else //values
+        {
+            indent (temp, indentation);
+            for (; s[i] != '<'; i ++)
+            {
+                temp += s[i];
+            }
+            // string res = oneline (temp);
+            i--;
+            data.push (temp);
         }
-
     }
-    temp_file.open ("D:\\CSE\\Senior 1\\Data\\Data_Project\\project\\temp.xml");
-    file_string (temp_file, result);
-    cout << result.size ();
-
-    //read from temp file and overwrite the original file????
-    return result;
+    return queue_string (data, to_json);
 }
 
-void file_string (fstream& file, vector<string>& result)
+void indent (string& temp, int indentation)
 {
-    string line;
-    while (getline (file, line))
-        result.push_back (line);
+    for (int j = 0; j < indentation * 4; j ++)
+        temp += ' ';
 }
 
-void Parse_data (int indentation, fstream& file, string& line, int& i, string& data)
-{
-    // remove_space (line, i);
-    // if (i >= line.size ())
-    //     return;
 
-    while (line[i] != '<' && i < line.size ())
+string queue_string (queue<string>& data, vector<string>& to_json) //time O(n) // space O(1)
+{
+    string ans = "";
+    while (!data.empty ())
     {
-        // indent (indentation, file);
-        data += line[i++];
+        ans += data.front ();
+        to_json.push_back (data.front ());
+        ans += '\n';
+        data.pop ();
     }
-    if (line[i] == '<')  //data is finished
-        data_to_file (indentation, file, line, i, data);
-
-    // file << endl;
-    i --;
+    return ans;
 }
 
-void data_to_file (int indentation, fstream& file, string& line, int& i, string& data)
+string remove (string* file)  //time O(N) //space O(1)
 {
-    if (data != "")
+    string output = "";
+    //to clear the white spaces and remove new lines:
+    size_t i = 0;
+    for (; i < file->size (); i++)
     {
-        indent (indentation, file);
-        file << data;
-        file << endl;
+        if ((*file)[i] == ' ')
+            continue;
+        else
+            break;
     }
-    data = "";
-}
-void Print_tag (int indentation, fstream& file, string& line, int& i) //tested
-{
-    // if (i == line.size ())
-    //     return;
-
-    indent (indentation, file);
-    while (line[i] != '>')
+    for (; i < file->size (); i++)
     {
-        if (line[i] != ' ')
-            file << line[i++];
+        if ((*file)[i] == '\t' || (*file)[i] == '\n' || ((*file)[i] == ' ' && (*file)[i + 1] == ' ') || ((*file)[i] == ' ' && (*file)[i + 1] == '<'))
+            continue;
+        else
+        {
+            output = output + (*file)[i];
+        }
     }
-    file << line[i];
-    file << endl;
-}
-
-void indent (int n, fstream& file)  //tested
-{
-    file << string (n * 4, ' ');
-}
-
-void remove_space (string& line, int& i)
-{
-    for (; i < line.size (); i ++)
+    string res = "";
+    for (size_t j = 0; j < output.size (); j++)
     {
-        if (line[i] != ' ')
-            return;
+        if (output[j] == '<') //opening tag
+        {
+            for (; output[j] != '>'; j++)
+            {
+                if (output[j] == ' ')
+                    continue;
+                else
+                    res += output[j];
+            }
+        }
+        res += output[j];
     }
+    return *file = res;
 }
-
-void Print_line (int indentation, fstream& file, string& line, int& i)
-{
-    indent (indentation, file);
-    while (i != line.size ())
-    {
-        file << line[i++];
-    }
-    file << line[i];
-    file << endl;
-}
-
-// void erase_newLine (string& str)
-// {
-//     str.erase (remove (str.begin (), str.end (), '\n'), str.end ());
-// }
