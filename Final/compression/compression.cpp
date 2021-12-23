@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int compvalue =0;
+
 
 
 minHeapNode* getNode(char c, int freq, minHeapNode* left, minHeapNode* right)
@@ -46,11 +46,33 @@ void encode(minHeapNode* root, string s , map<char, string> &huffmanCode)
 }
 
 
-int HuffmanCoding(string text)
+string decode(minHeapNode* root , string s)
+{
+    // i passed the encoded string to the function which contains the ones and zeros of the huffman
+    // i made a node than iterates through the index and found the suitable one the decompress it
+    string decode = "";
+    minHeapNode* temp = root;
+        for (int i=0;i<s.size();i++)
+        {
+            if (s[i] == '0')
+               temp = temp->left;
+            else
+               temp = temp->right;
+
+            if (!(temp->left && temp->right))
+            {
+                decode += temp->c;
+                temp = root;
+            }
+        }
+        return decode;
+}
+
+string HuffmanCoding(string text)
 {
     map<char, int> freq_arr;
 
-    compvalue =0;
+    int compvalue =0;
 
     for(size_t i=0; i<text.length(); i++)
     {
@@ -58,7 +80,7 @@ int HuffmanCoding(string text)
         freq_arr[ch] += 1;
     }
 
-
+    // minheap
     priority_queue<minHeapNode*, vector<minHeapNode*>, compare> perQUEUE;
 
 
@@ -91,21 +113,47 @@ int HuffmanCoding(string text)
     auto e1 = freq_arr.end();
     auto e2 = huffmanCode.end();
 
-
+    // iterate through the freq and the huffman map
+    // multiply the freq of each character by its string
     for(;f1 != e1 && f2 != e2 ; ++f1 , ++f2 ){
         compvalue += f1->second * length(f2->second);
 
     }
+    int defvalue = (text.length())*8;
+    
+    
+    string temp = to_string(defvalue);
+    string temp2 = to_string(compvalue);
+    string output = "Size before compression is " +temp+ " Bit\n" ;
+    output += "Size after compression is " +temp2+ " Bit\n";
+
+
+    //the compressed number of bits after huffman compression
+    string encodedStr;
+    for(char i: text){
+        encodedStr += huffmanCode[i];
+    }
+    output += "The encoded string is:\n";
+    output += encodedStr;
+    output += "\n";
+    output += "The decoded string is:\n";
+
+    // the decoded string aka the original text
+    string decoded = decode(root , encodedStr);
+    output += decoded;
+
+
     /*for(auto pair: huffmanCode)
     {
-        cout << pair.first << ":" << pair.second << endl;
+        output += pair.first+ ":"  +pair.second+ "\n";
     }
     cout << "_________________" << endl;
     for(auto pair: freq_arr)
     {
         cout << pair.first << ":" << pair.second << endl;
     }*/
-    return compvalue;
+    return output;
+    
 }
 
 
