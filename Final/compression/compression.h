@@ -32,7 +32,9 @@ int length(string str);
 
 void encode(minHeapNode* root, string s , map<char, string> &huffmanCode);
 
-int HuffmanCoding(string text);
+
+string HuffmanCoding(string text);
+
 
 
 
