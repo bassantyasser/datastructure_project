@@ -56,10 +56,8 @@ void MainWindow::on_compressionButton_clicked()
 {
     QString qs = ui->Input->toPlainText();
     string input = qs.toStdString();
-    int defValue = (input.length())*8;
-    int compValue = HuffmanCoding(input);
-    ui->output->setPlainText("Size before Compression is " +QString::number(defValue) +
-                        " Bit \nSize after Compression is " +QString::number(compValue) +" Bit\n");
+    string output = HuffmanCoding(input);
+    ui->output->setPlainText(QString::fromStdString(output));
 }
 
 
