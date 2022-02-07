@@ -112,3 +112,18 @@ void MainWindow::on_correctingButton_clicked()
 
 }
 
+
+void MainWindow::on_graphButton_clicked()
+{
+    QString qs = ui->Input->toPlainText();
+    string text = qs.toStdString();
+    str_to_graph(text);
+
+    system("dot -Tpng -O a.dot");
+    QPixmap graph("a.dot.png");
+    ui->graphLabel->setPixmap(graph);
+
+}
+
+
+
